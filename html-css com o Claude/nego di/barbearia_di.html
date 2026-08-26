@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nego Di! — Barbearia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --yellow: #F5C518;
+      --black: #0A0A0A;
+      --gray: #1A1A1A;
+      --gray2: #2A2A2A;
+      --white: #F0EDE6;
+      --accent: #D4A800;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 6vw;
+      background: rgba(10,10,10,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(245,197,24,0.15);
+    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--yellow); }
+    .nav-logo span { color: var(--white); }
+    nav ul { display: flex; gap: 32px; list-style: none; }
+    nav ul a { text-decoration: none; color: var(--white); font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; }
+    nav ul a:hover { color: var(--yellow); }
+    .nav-cta { background: var(--yellow); color: var(--black) !important; padding: 8px 20px; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      padding: 120px 6vw 80px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(135deg, rgba(245,197,24,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(245,197,24,0.08) 0%, transparent 60%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; top: -10%; right: -5%;
+      width: 55%; height: 130%;
+      background: var(--gray);
+      transform: skewX(-8deg); z-index: -1;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+      max-width: 1200px; width: 100%;
+    }
+    .hero-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 4px; text-transform: uppercase; color: var(--yellow);
+      border: 1px solid rgba(245,197,24,0.4); padding: 5px 14px; margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 9vw, 8rem);
+      line-height: 0.92; letter-spacing: 2px;
+    }
+    .hero h1 .accent { color: var(--yellow); }
+    .hero-sub {
+      margin-top: 24px; font-size: 1rem; font-weight: 300;
+      color: rgba(240,237,230,0.6); line-height: 1.7; max-width: 380px;
+    }
+    .hero-actions { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--yellow); color: var(--black);
+      padding: 14px 32px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-ghost {
+      background: transparent; color: var(--white);
+      padding: 13px 32px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      border: 1px solid rgba(240,237,230,0.3); cursor: pointer; text-decoration: none;
+      display: inline-block; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+    .hero-image-wrap { position: relative; }
+    .hero-image-wrap img { width: 100%; height: 500px; object-fit: cover; display: block; filter: grayscale(20%); }
+    .hero-image-wrap::before {
+      content: ''; position: absolute; inset: -8px 8px 8px -8px;
+      border: 2px solid var(--yellow); z-index: -1;
+    }
+
+    /* SECTION HEADER */
+    .section-header { text-align: center; margin-bottom: 60px; }
+    .section-tag { font-size: 0.7rem; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--yellow); margin-bottom: 12px; display: block; }
+    .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 2px; }
+
+    /* SERVICES */
+    .services { padding: 100px 6vw; position: relative; }
+    .cards-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px; max-width: 1200px; margin: 0 auto;
+    }
+    .card { position: relative; overflow: hidden; cursor: pointer; }
+    .card img {
+      width: 100%; height: 420px; object-fit: cover; display: block;
+      transition: transform 0.5s ease, filter 0.4s ease;
+      filter: grayscale(30%) brightness(0.75);
+    }
+    .card:hover img { transform: scale(1.05); filter: grayscale(0%) brightness(0.65); }
+    .card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.1) 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 32px 28px; transition: background 0.3s;
+    }
+    .card:hover .card-overlay { background: linear-gradient(to top, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.25) 55%); }
+    .card-label { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--yellow); font-weight: 600; margin-bottom: 8px; }
+    .card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+    .card-price { display: inline-block; margin-top: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--yellow); letter-spacing: 1px; }
+    .card-btn {
+      display: inline-block; margin-top: 18px;
+      background: var(--yellow); color: var(--black);
+      padding: 9px 22px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      border: none; cursor: pointer; text-decoration: none;
+      opacity: 0; transform: translateY(8px); transition: opacity 0.3s, transform 0.3s;
+    }
+    .card:hover .card-btn { opacity: 1; transform: translateY(0); }
+
+    /* BOOKING */
+    .booking { padding: 100px 6vw; background: var(--gray); position: relative; }
+    .booking::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--yellow); }
+    .booking-inner { max-width: 700px; margin: 0 auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(240,237,230,0.5); }
+    input, select, textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white); padding: 13px 16px;
+      font-family: 'Barlow', sans-serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s, background 0.2s;
+      width: 100%; -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--yellow); background: rgba(245,197,24,0.04); }
+    select option { background: var(--gray2); color: var(--white); }
+    textarea { resize: vertical; min-height: 90px; }
+    .services-select { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 4px; }
+    .service-option { cursor: pointer; position: relative; }
+    .service-option input[type="radio"] { display: none; }
+    .service-option-label {
+      display: block; padding: 14px 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-align: center; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: rgba(240,237,230,0.6); cursor: pointer; transition: all 0.2s;
+    }
+    .service-option input[type="radio"]:checked + .service-option-label {
+      border-color: var(--yellow); background: rgba(245,197,24,0.1); color: var(--yellow);
+    }
+    .service-option-label:hover { border-color: rgba(245,197,24,0.4); color: var(--white); }
+    .form-submit { margin-top: 32px; text-align: center; }
+    .form-submit .btn-primary { width: 100%; font-size: 1.1rem; padding: 16px; }
+
+    /* CONFIRMATION */
+    .confirmation { display: none; text-align: center; padding: 60px 20px; }
+    .confirmation.show { display: block; }
+    .check-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--yellow); color: var(--black);
+      font-size: 2rem; display: inline-flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .confirmation h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; margin-bottom: 12px; }
+    .confirmation p { color: rgba(240,237,230,0.6); font-size: 1rem; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(245,197,24,0.15);
+      padding: 48px 6vw;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 3px; color: var(--yellow); }
+    .footer-info { font-size: 0.82rem; color: rgba(240,237,230,0.4); line-height: 1.8; }
+    .footer-hours span { color: var(--yellow); font-weight: 600; }
+
+    /* SCROLL LINE */
+    .scroll-line { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0.5; }
+    .scroll-line span { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; }
+    .scroll-line::after { content: ''; width: 1px; height: 48px; background: var(--yellow); animation: scrollPulse 1.5s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-image-wrap { display: none; }
+      .hero-bg::after { display: none; }
+      nav ul { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .services-select { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Nego<span> Di!</span></div>
+  <ul>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#agendar">Preços</a></li>
+    <li><a href="#agendar" class="nav-cta">Agendar</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Barbearia Premium</div>
+      <h1>Nego<br><span class="accent">Di!</span></h1>
+      <p class="hero-sub">Estilo, precisão e atitude. Cada corte é uma obra de arte feita com respeito ao seu estilo.</p>
+      <div class="hero-actions">
+        <a href="#agendar" class="btn-primary">Agendar agora</a>
+        <a href="#servicos" class="btn-ghost">Ver serviços</a>
+      </div>
+    </div>
+    <div class="hero-image-wrap fade-up">
+      <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Barbearia Nego Di" />
+    </div>
+  </div>
+  <div class="scroll-line"><span>Rolar</span></div>
+</section>
+
+<section class="services" id="servicos">
+  <div class="section-header fade-up">
+    <span class="section-tag">O que fazemos</span>
+    <h2 class="section-title">Nossos Serviços</h2>
+  </div>
+  <div class="cards-grid">
+    <div class="card fade-up">
+      <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=700&q=80" alt="Corte com Degradê" />
+      <div class="card-overlay">
+        <span class="card-label">Serviço 01</span>
+        <div class="card-title">Corte com<br>Degradê</div>
+        <span class="card-price">R$ 35</span>
+        <a href="#agendar" class="card-btn">Agendar</a>
+      </div>
+    </div>
+    <div class="card fade-up">
+      <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=700&q=80" alt="Barba" />
+      <div class="card-overlay">
+        <span class="card-label">Serviço 02</span>
+        <div class="card-title">Barba</div>
+        <span class="card-price">Consulte</span>
+        <a href="#agendar" class="card-btn">Agendar</a>
+      </div>
+    </div>
+    <div class="card fade-up">
+      <img src="https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?w=700&q=80" alt="Corte com Barba" />
+      <div class="card-overlay">
+        <span class="card-label">Serviço 03</span>
+        <div class="card-title">Corte com<br>Barba</div>
+        <span class="card-price">R$ 40</span>
+        <a href="#agendar" class="card-btn">Agendar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="booking" id="agendar">
+  <div class="booking-inner">
+    <div class="section-header fade-up">
+      <span class="section-tag">Reserva online</span>
+      <h2 class="section-title">Faça seu Agendamento</h2>
+    </div>
+    <div id="bookingForm" class="fade-up">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" placeholder="Seu nome" />
+        </div>
+        <div class="form-group">
+          <label for="telefone">WhatsApp</label>
+          <input type="tel" id="telefone" placeholder="(11) 99999-9999" />
+        </div>
+        <div class="form-group full">
+          <label>Escolha o serviço</label>
+          <div class="services-select">
+            <label class="service-option">
+              <input type="radio" name="servico" value="Corte com Degradê — R$ 35" />
+              <span class="service-option-label">Corte com<br>Degradê<br><strong style="color:var(--yellow)">R$ 35</strong></span>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="servico" value="Barba" />
+              <span class="service-option-label">Barba<br><br><strong style="color:var(--yellow)">Consulte</strong></span>
+            </label>
+            <label class="service-option">
+              <input type="radio" name="servico" value="Corte com Barba — R$ 40" />
+              <span class="service-option-label">Corte com<br>Barba<br><strong style="color:var(--yellow)">R$ 40</strong></span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="data">Data</label>
+          <input type="date" id="data" />
+        </div>
+        <div class="form-group">
+          <label for="horario">Horário</label>
+          <select id="horario">
+            <option value="">Selecione</option>
+            <option>09:00</option><option>09:30</option><option>10:00</option>
+            <option>10:30</option><option>11:00</option><option>11:30</option>
+            <option>14:00</option><option>14:30</option><option>15:00</option>
+            <option>15:30</option><option>16:00</option><option>16:30</option>
+            <option>17:00</option><option>17:30</option><option>18:00</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="obs">Observações (opcional)</label>
+          <textarea id="obs" placeholder="Algum detalhe especial sobre o corte..."></textarea>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button class="btn-primary" onclick="confirmarAgendamento()">Confirmar Agendamento →</button>
+      </div>
+    </div>
+    <div id="confirmation" class="confirmation">
+      <div class="check-icon">✓</div>
+      <h3>Agendado!</h3>
+      <p id="confirmText">Seu horário foi reservado com sucesso.<br>Entraremos em contato para confirmar.</p>
+      <br>
+      <button class="btn-ghost" onclick="novoAgendamento()" style="margin-top:16px">Fazer novo agendamento</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Nego Di!</div>
+  <div class="footer-info">
+    <div>Rua da Barbearia, 123 — São Paulo, SP</div>
+    <div>📞 (11) 99999-0000</div>
+  </div>
+  <div class="footer-info footer-hours">
+    <div><span>Seg — Sex</span> &nbsp;09h às 19h</div>
+    <div><span>Sábado</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;09h às 17h</div>
+    <div><span>Domingo</span> &nbsp;&nbsp;&nbsp;Fechado</div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  document.getElementById('data').min = new Date().toISOString().split('T')[0];
+
+  function confirmarAgendamento() {
+    const nome = document.getElementById('nome').value.trim();
+    const tel = document.getElementById('telefone').value.trim();
+    const data = document.getElementById('data').value;
+    const horario = document.getElementById('horario').value;
+    const servicoEl = document.querySelector('input[name="servico"]:checked');
+    const obs = document.getElementById('obs').value.trim();
+
+    if (!nome || !tel || !data || !horario || !servicoEl) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const servico = servicoEl.value;
+
+    // Enviar dados para o back-end
+    fetch('/agendamento', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nome,
+        telefone: tel,
+        servico,
+        data,
+        horario,
+        obs
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const dataFmt = new Date(data.agendamento.data + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+        document.getElementById('confirmText').innerHTML =
+          `<strong style="color:var(--yellow)">${nome}</strong>, seu agendamento foi confirmado!<br>
+          📅 ${dataFmt} às ${horario}<br>
+          ✂️ ${servico}<br><br>
+          <span style="opacity:0.6;font-size:0.9rem">Entraremos em contato no WhatsApp para confirmar.</span>`;
+        document.getElementById('bookingForm').style.display = 'none';
+        const conf = document.getElementById('confirmation');
+        conf.classList.add('show');
+        conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        alert('Erro: ' + data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Erro:', error);
+      alert('Erro ao enviar agendamento. Tente novamente.');
+    });
+  }
+
+  function novoAgendamento() {
+    document.getElementById('bookingForm').style.display = 'block';
+    document.getElementById('confirmation').classList.remove('show');
+    document.getElementById('nome').value = '';
+    document.getElementById('telefone').value = '';
+    document.getElementById('data').value = '';
+    document.getElementById('horario').value = '';
+    document.getElementById('obs').value = '';
+    const checked = document.querySelector('input[name="servico"]:checked');
+    if (checked) checked.checked = false;
+  }
+</script>
+</body>
+</html>
+
